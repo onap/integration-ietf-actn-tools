@@ -27,3 +27,8 @@ ignore =
 bears = MarkdownBear
 ignore =
   .tox/**
+
+[js]
+bears = JSHintBear
+ignore =
+  .tox/**
