@@ -1,0 +1,216 @@
+module obsp-phy-conn {
+  yang-version 1.1;
+
+  namespace "urn:ietf:params:xml:ns:yang:obsp-phy-conn";
+  prefix "phy-conn";
+
+  import obsp-phy-types {
+    prefix "phy-types";
+  }
+
+  import ietf-inet-types {
+    prefix inet;
+/*    reference
+      "RFC 6991: Common YANG Data Types"; */
+  }
+
+  organization
+    "Huawei";
+  contact
+    "Editor: Aihua Guo
+             <mailto:aihuaguo@huawei.com>
+
+     Editor: Hesam Rahimi
+             <mailto:hesam.rahimi@huawei.com>
+
+     Editor: Henry Yu
+             <mailto:henry.yu1@huawei.com>
+
+     Editor: Yuren You
+             <mailto:yuren.you@huawei.com>";
+
+  description
+    "This module defines a data model for physical layer 
+	 connnections";
+
+  revision 2018-08-22 {
+    description
+      "Revision 0.1";
+  }
+
+ /*
+  * Groupings
+  */
+
+  grouping node-device-connection {
+    description "Physical connection segment in a device in a node.";
+    leaf device-id {
+	  type uint32;
+	  description "Device identifier on the node";
+	}
+	
+	leaf index {
+	  type uint32;
+	  description "Index of the device.";
+	}
+	
+	leaf in-port-id {
+	  type uint32;
+	  description "Input port identifier on the device";
+	}
+	leaf in-channel-id {
+	  type uint32;
+      description "Input channel identifier in Ghz unit, e.g. 192000(Ghz)";
+	}
+	leaf out-port-id {
+	  type uint32;
+	  description "Input port identifier on the device";
+	}
+	leaf out-channel-id {
+	  type uint32;
+      description "Output channel identifier in Ghz unit, e.g. 192000(Ghz)";
+	}
+	
+  }
+
+  grouping estimate-actual-osnr-grouping {
+      description "Estimated and actual power grouping.";
+  	leaf estimate {
+        type phy-types:power-db;
+  	  description "Estimated power in dB or dBm.";
+  	}
+  	leaf actual {
+        type phy-types:power-db;
+  	  description "Actual power in dB or dBm.";
+  	  config false;
+  	}
+   }
+
+  grouping node-connection {
+    description "Physical connection in a node";
+	
+	leaf node-id {
+	  type uint32;
+	  description "OMS node identifier";
+	}
+	
+	list connections {
+	  key "device-id";
+	  description
+	    "A sequential list of device connections in a node.";
+	
+	  uses node-device-connection;
+	}
+	
+	container node-connection-osnr {
+	  description 
+		"OSNR from transmitter to the last exit device of this node.";
+	  uses estimate-actual-osnr-grouping;
+	}
+  }
+
+  grouping oms-link-connection {
+    description "Physical connection on an OMS link";
+
+    leaf oms-link-id {
+      type uint32;
+      description "OMS link identifier";
+    }
+	
+	leaf channel-id {
+	  type uint32;
+	  description "Channel identifier in Ghz unit, e.g. 192000(Ghz)";
+	}
+
+    //TODO: HENRY: db-id is temporary. To be removed once OPE integrates with YANG datastore
+	leaf db-id {
+	  type uint32;
+	  description "ID of the MySQL table in which the OMS link is stored.";
+	}
+	
+	container osnr {
+	  description 
+		"OSNR from transmitter to the end of this OMS link.";
+	  uses estimate-actual-osnr-grouping;
+	}
+  }
+
+  grouping phy-conn-path-grouping {
+    description "Physical connection path grouping.";
+	
+	leaf index {
+	  type uint32;
+	  description "Index.";
+	}
+	
+	leaf conn-type {
+	  type identityref {
+	    base phy-types:connection-type;
+	  }
+      description "Connection type (node or OMS link)";
+	}
+	
+	choice connection-type {
+	  case node {
+	    when "../conn-type='phy-types:conn-node'";
+		uses node-connection;
+	  }
+	  
+	  case oms-link {
+	    when "../conn-type='phy-types:conn-oms'";
+		uses oms-link-connection;
+	  }
+	}
+  }
+
+  container physical-connections {
+    description "Physical connections list.";
+	
+	list connections {
+	  key "phy-conn-id";
+	  description "Physical connection list.";
+	  uses obsp-phy-conn-grouping;
+	}
+  }
+  
+  grouping obsp-phy-conn-grouping {
+    description "Physical connection grouping.";
+
+    leaf phy-conn-id {
+	  type uint32;	  
+      description "Physical connection identifier.";
+	}
+
+    leaf phy-topo-id {
+	     type inet:uri;	  
+       description "Identifier of the physical network in which this connection is established.";
+	  }
+
+    leaf role {
+	  type identityref {
+	    base phy-types:protection-role;
+      }	  
+      description "Protection role.";
+	}
+	
+	leaf direction {
+	  type identityref {
+	    base phy-types:direction;
+	  }
+      description "Direction.";
+	}
+	
+	leaf active {
+	  type boolean;
+	  description 
+	    "Indicates if physical connection is carrying active traffic.";
+	}
+	
+    list conn-path {
+	  key "index";
+	  description "A sequential list of node cross-connects and OMS links";
+	  
+	  uses phy-conn-path-grouping;
+	}
+  }
+}

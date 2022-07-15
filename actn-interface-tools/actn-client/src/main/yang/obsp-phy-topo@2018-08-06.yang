@@ -1,0 +1,837 @@
+module obsp-phy-topo {
+  yang-version 1.1;
+
+  namespace "urn:ietf:params:xml:ns:yang:obsp-phy-topo";
+  prefix "phy-topo";
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  
+  import ietf-network {
+    prefix "nw";
+  }
+
+  import ietf-network-topology {
+    prefix "nt";
+  }
+
+  import obsp-phy-types {
+    prefix "phy-types";
+  }
+
+  organization
+    "Huawei";
+  contact
+    "Editor: Aihua Guo
+             <mailto:aihuaguo@huawei.com>
+
+     Editor: Hesam Rahimi
+             <mailto:hesam.rahimi@huawei.com>
+
+     Editor: Henry Yu
+             <mailto:henry.yu1@huawei.com>
+
+     Editor: Yuren You
+             <mailto:yuren.you@huawei.com>";
+
+  description
+    "This module defines a data model for physical layer 
+	 configuration and telemtry";
+
+  revision 2018-08-06 {
+    description
+      "Revision 0.1";
+    reference
+      "draft-obsp-phy-topo-yang-01";
+  }
+
+ /*
+  * Groupings
+  */
+
+  grouping oms-ltp-global-id {
+    description "OMS TP global identifier";
+	
+	leaf node-id {
+	  type uint32;
+	  description "OMS node identifier";
+	}
+
+	leaf device-id {
+	  type uint32;
+	  description "Device identifier on the node";
+	}
+	
+	leaf port-id {
+	  type uint32;
+	  description "Port identifier on the device";
+	}
+  }
+
+  grouping ltp-local-id {
+    description "LTP global identifier";
+	
+	leaf device-id {
+	  type uint32;
+	  description "Device identifier on the node";
+	}
+	
+	leaf port-id {
+	  type uint32;
+	  description "Port identifier on the device";
+	}
+	
+  }
+  
+  grouping channel-grid-grouping {
+    leaf grid-id {
+	  type identityref {
+	    base phy-types:grid-type;
+	  }
+	  description "Grid identifier";
+	}
+	leaf first-channel {
+	  type uint32;
+	  description "first channel identifier in Ghz unit, e.g. 192000(Ghz)";
+	}
+	leaf channel-num {
+	  type uint32;
+	  description "number of channels, e.g. 40, 80";
+	}
+	leaf channel-step {
+	  type uint32;
+	  description "channel step, e.g. 50(Ghz), 100(Ghz)";
+	}
+  }
+
+  grouping device-port-grouping {
+    description "Device port grouping";
+	leaf port-id {
+	  type uint32;
+	  description "Port identifier";
+	}
+	leaf port-type {
+	  type identityref {
+	    base phy-types:port-type;
+	  }
+	  description "Port type";
+	}
+    leaf descr {
+      type string;
+      description "Port description";
+    }
+    leaf capabilities {
+      type binary {
+	    length 128;
+	  }
+      description 
+	    "Bitmap flags indicating the capabilities of a device port";
+    }
+	choice device-port-type {
+	  case mdmx-client-port {
+	    when "../port-type='phy-types:mdmx-client-port'";
+	    leaf channel-id {
+		  type uint32;
+		  description "channel identifier in Ghz unit, e.g. 192000(Ghz)";
+		}
+	  }
+	  case xpdr-network-port {
+	    when "../port-type='phy-types:xpdr-network-port'";
+	    leaf is-tunable {
+	      type boolean;
+	      description "Indicates if the transponder supports tunable or not.";
+	    }
+		container launching-power {
+		  description "Launching power in dBm";
+		  uses estimate-actual-power-grouping;
+		}
+		container receiving-power {
+		  description "Receiving power in dBm";
+		  uses estimate-actual-power-grouping;
+		}
+	    container receiving-osnr {
+	      description "Receiving OSNR per channel in dB";
+		  uses estimate-actual-power-grouping;
+	    }
+		container receiving-ber {
+	      description "Pre-FEC BER in dB";
+		  uses estimate-actual-power-grouping;
+	    }
+	    choice fixed-or-tunable {
+	      case fixed {
+	        when "../is-tunable='false'";
+	        leaf fixed-channel {
+		      type uint32;
+		      description "Fixed channel in GHz, e.g. 192000(GHz)";
+		    }
+	      }
+	      case tunable {
+	        when "../is-tunable='true'";
+			container channel-grid {
+			  description "Channel grid supported by the transponder's network port";
+			  uses channel-grid-grouping;
+			}
+	        leaf tuned-channel-id {
+	          type uint32;
+	          description "Tuned channel identifier in Ghz unit, e.g. 192000(Ghz)";
+	        }
+	      }
+	    }
+		leaf laser-on {
+		  description "Indicates laser status.";
+		  type boolean;
+		  config false;
+		}
+	  }
+	  case wss-network-port {
+	    when "../port-type='phy-types:wss-network-port'";
+		
+		leaf-list cross-connect-ports {
+		  description 
+		    "Describes the list of channels cross-connected.
+			 Index is a channel index in the grid. Value of 
+			 0 means the corresponding channel is not cross-
+			 connected. Non-zero value is the port-id to which
+			 this channel is cross-connected.";
+		  type uint32; 
+		}
+		container attenuation {
+		  description "Channel attenuation in dB";
+		  uses estimate-actual-power-list-grouping;
+	    }
+	    container channel-power-out {
+		  description "Channel output power in dB";
+		  uses estimate-actual-power-list-grouping;
+	    }
+	  }
+	}
+  }
+  grouping wss-device-grouping {
+    description "grouping for WSS device.";
+	leaf device-subtype {
+	  type identityref {
+		base phy-types:device-subtype;
+	  }
+	  description "Device subtype";
+	}
+	leaf degree-num {
+	  type uint8;
+	  description "ROADM degree number.";
+	}
+	leaf location {
+	  type string;
+	  description "Physical location";
+	}
+	leaf target-set-point {
+	  type phy-types:power-db;
+	  description "WSS target set point for power equalization";
+	}
+	container grid {
+	  description "Channel grid supported by the WSS";
+	  uses channel-grid-grouping;
+	}
+  }
+  
+  grouping in-out-power-grouping {
+    description "Input and output power grouping.";
+	leaf input-power {
+	  type phy-types:power-db;
+	  description "Input power in dB";
+	}
+	leaf output-power {
+	  type phy-types:power-db;
+	  description "Output power in dB";
+	}
+  }
+  
+  grouping device-telemetry-common-grouping {
+    description "Common device telemetry grouping.";
+
+	leaf barcode {
+	  type string;
+	  description "EDFA barcode";
+	}
+	leaf location {
+	  type string;
+	  description "Physical location";
+	}
+	leaf signature {
+	  type string;
+	  description "EDFA signature";
+	}
+	leaf temperature {
+	  type decimal64 {
+	    fraction-digits 1;
+		range "-60.0 .. 224.0";
+	  }
+	  description "Temperature in Fahrenheit";
+	  config false;
+	}
+  }
+  
+  grouping estimate-actual-power-grouping {
+    description "Estimated and actual power grouping.";
+	leaf estimate {
+      type phy-types:power-db;
+	  description "Estimated power in dB or dBm.";
+	}
+	leaf actual {
+      type phy-types:power-db;
+	  description "Actual power in dB or dBm.";
+	  config false;
+	}
+  }
+
+  grouping estimate-actual-power-list-grouping {
+    description "Estimated and actual power in a list.";
+	    leaf-list estimate {
+		  description 
+		    "Estimated power. Index is with the range 
+			 defined by the grid.";
+		  type phy-types:power-db;
+		}
+	    leaf-list actual {
+		  description 
+		    "Actual power. Index is with the range 
+			 defined by the grid.";
+		  type phy-types:power-db;
+		}
+  }
+  
+  grouping fiber-interface-grouping {
+    description "Fiber interface (OSC/DWDM mux/demux) grouping.";
+    leaf fiu-equipped {
+      type boolean;
+	  default true;
+      description "Indicates if FIU is connected next to EDFA.";
+    }
+	
+	container fiber-interface-unit {
+	  when "../fiu-equipped='true'";
+      leaf fiu-id {
+        type uint32;
+        description "FIU identifier";
+      }
+      leaf fiu-type {
+        type identityref {
+          base phy-types:device-subtype;
+        }
+      }
+	}
+  }
+  
+  grouping edfa-device-telemetry-grouping {
+    description "EDFA common telemetry grouping.";
+
+	uses device-telemetry-common-grouping;
+
+	container total-input-power {
+	  description "Total input power in dB";
+	  uses estimate-actual-power-grouping;
+	}
+	container total-output-power {
+	  description "Total output power in dB";
+	  uses estimate-actual-power-grouping;
+	}
+	container power-per-channel {
+	  description 
+	    "Per-channel input and output power in dB. It is an 
+		 array with index referring to the grid also defined
+		 in this container.";
+	  
+	  container channel-grid {
+	    description "Channel grid supported by the EDFA";
+	    uses channel-grid-grouping;
+	  }
+	  container input-power {
+	    description "Channel input power in dB";
+		uses estimate-actual-power-list-grouping;
+	  }
+	  container output-power {
+	    description "Channel output power in dB";
+	    uses estimate-actual-power-list-grouping;
+	  }
+	  container gain {
+	    description "Channel gain in dB";
+	    uses estimate-actual-power-list-grouping;
+	  }
+	  container osnr-penalty {
+	    description "Channel osnr penalty in dB";
+	    uses estimate-actual-power-list-grouping;
+	  }
+	  container noise-figure {
+	    description "Channel noise figure in dB";
+	    uses estimate-actual-power-list-grouping;
+	  }
+	  container output-port-osnr {
+	    description "Channel osnr at amplifier output port in dB";
+	    uses estimate-actual-power-list-grouping;
+	  }
+	}
+  }
+
+  grouping edfa-device-grouping {
+    description "grouping for EDFA device.";
+	leaf role {
+	  type identityref {
+		base phy-types:edfa-role;
+	  }
+	  description "EDFA role (pre-amp, post-amp, or in-line amp)";
+	}
+	leaf mode {
+	  type identityref {
+		base phy-types:edfa-mode;
+	  }
+	  description "EDFA operation mode (constant gain or constant output)";
+	}
+	leaf phy-node-id {
+	  when "../role='phy-types:edfa-in-line-amp'";
+	  type inet:ip-address;
+	  description "The physical node IP address in which this EDFA resides";
+	}
+	leaf device-subtype {
+	  type identityref {
+		base phy-types:device-subtype;
+	  }
+	  description "Device subtype";
+	}
+	choice edfa-mode {
+	  case constant-gain {
+	    when "../mode='phy-types:constant-gain'";
+	    leaf gain {
+		  type decimal64 {
+		    fraction-digits 1;
+		    range "-40.0 .. 40.0";
+	      }
+		  description "EDFA gain setting in dB";
+		}
+	  }
+	  case constant-power {
+	    when "../mode='phy-types:constant-power'";
+	    leaf power {
+		  type decimal64 {
+		    fraction-digits 1;
+		    range "-40.0 .. 40.0";
+	      }
+		  description "EDFA power setting in dBm";
+		}
+	  }
+	}
+	leaf attenuation {
+      type phy-types:power-db;
+      description "EDFA attenuation.";
+    }
+	uses fiber-interface-grouping;
+	uses edfa-device-telemetry-grouping;
+  }  
+
+  grouping xpdr-device-grouping {
+    description "grouping for transponder device.";
+	leaf device-subtype {
+	  type identityref {
+		base phy-types:device-subtype;
+	  }
+	  description "Device subtype";
+	}
+  }
+  
+  grouping fiber-device-grouping {
+    description "grouping for fibers.";
+	container distance {
+	  description "Link distance in km";
+	  leaf estimate {
+	    type phy-types:distance-km;
+	    description "Estimated link distance in km";
+	  }
+	  leaf actual {
+	    type phy-types:distance-km;
+	    description "Actual link distance in km";
+	  }
+	}
+	container fiber-type {
+	  description "Fiber type";
+	  leaf estimate {
+	    type string;
+	    description "Estimated fiber type";
+	  }
+	  leaf actual {
+	    type string;
+	    description "Actual fiber type";
+	  }
+	}  
+	container total-loss {
+	  description "Total fiber loss";
+	  uses estimate-actual-power-grouping;
+	}  
+	container loss-per-channel {
+	  description 
+	    "Per-channel loss in dB. It is an array with index 
+		 referring to the grid also defined in this container.";
+	  
+	  container channel-grid {
+	    description 
+		  "Channel grid that defines the indice of this power list";
+	    uses channel-grid-grouping;
+	  }
+	  uses estimate-actual-power-list-grouping;
+	}
+  }  
+  
+  grouping device-grouping-common {
+    description "Device grouping - common parameters";
+	leaf device-id {
+	  type uint32;
+	  description "Device identifier";
+	}
+	leaf device-type {
+	  type identityref {
+	    base phy-types:device-type;
+	  }
+	}
+    leaf descr {
+      type string;
+      description "Device description";
+    }
+	
+	choice dev-type {
+	  description "Device-specific parameters.";
+	  case wss {
+	    when "../device-type='phy-types:device-wss'";
+	    container wss {
+		  uses wss-device-grouping;
+		}
+	  }
+	  case edfa {
+	    when "../device-type='phy-types:device-edfa'";
+	    container edfa {
+		  uses edfa-device-grouping;
+		}
+	  }
+	  case xpdr {
+	    when "../device-type='phy-types:device-xpdr'";
+	    container xpdr {
+		  uses xpdr-device-grouping;
+		}
+	  }
+	  case fiber {
+	    when "../device-type='phy-types:device-fiber'";
+	    container fiber {
+		  uses fiber-device-grouping;
+		}
+	  }
+	}
+    leaf capabilities {
+      type binary {
+	    length 128;
+	  }
+      description "Bitmap flags indicating the capabilities of a device";
+    }
+  }
+  
+  grouping internal-device-grouping {
+    description "Internal device grouping";
+	uses device-grouping-common;
+	list ltps {
+	  description 
+	    "LTPs hosted on the device, e.g. a WSS network port";
+	  key "port-id";
+	  uses device-port-grouping;
+	}
+  }
+  grouping external-device-grouping {
+    description "External device grouping";
+    leaf device-index {
+      type uint32;
+      description "Device index. Must be monotonically increasing.";
+    }
+	uses device-grouping-common;
+  }
+  
+  grouping oms-link-telemetry-grouping {
+    description "OMS link telemetry";
+	container e2e-distance {
+	  description "OMS link end-to-end distance in km";
+	  leaf estimate {
+	    type phy-types:distance-km;
+	    description "Estimated OMS link end-to-end distance in km";
+	  }
+	  leaf actual {
+	    type phy-types:distance-km;
+	    description "Actual OMS link end-to-end distance in km";
+	    config false;
+	  }
+	}
+	container e2e-delay {
+	  description "OMS link end-to-end propagation delay in million seconds";
+	  leaf estimate {
+	    type uint32 {
+		  range "0 .. 10000000";
+	    }
+	    description 
+		  "Estimated OMS link end-to-end propagation delay 
+		   in million seconds";
+	  }
+	  leaf actual {
+	    type uint32 {
+		  range "0 .. 10000000";
+	    }
+	    description 
+		  "Actual OMS link end-to-end propagation delay 
+		   in million seconds";
+	    config false;
+	  }
+	}
+	container total-input-power {
+	  description "Total input power in dB";
+	  uses estimate-actual-power-grouping;
+	}
+	container total-output-power {
+	  description "Total output power in dB";
+	  uses estimate-actual-power-grouping;
+	}
+	container power-per-channel {
+	  description 
+	    "Per-channel input and output power in dB. It is an 
+		 array with index referring to the grid also defined
+		 in this container.";
+	  
+	  container channel-grid {
+	    description "Channel grid that defines the indice of this power list";
+	    uses channel-grid-grouping;
+	  }
+	  container input-power {
+	    description "Channel input power in dB";
+		uses estimate-actual-power-list-grouping;
+	  }
+	  container output-power {
+	    description "Channel output power in dB";
+	    uses estimate-actual-power-list-grouping;
+	  }
+	  container osnr-penalty {
+	    description "Channel osnr penalty in dB";
+	    uses estimate-actual-power-list-grouping;
+	  }
+	}
+  }
+  
+  grouping oms-link-attributes {
+    description "OMS link attributes";
+
+    leaf oms-link-id {
+      type uint32;
+      description "OMS link identifier";
+    }
+    leaf descr {
+      type string;
+      description "OMS link description";
+    }
+	leaf direction {
+	  description "OMS link direction (uni-directional, bi-directional)";
+	  type identityref {
+	    base phy-types:link-direction;
+	  }
+	}
+	container src-ltp {
+	  description "Source LTP global identifier";
+	  uses oms-ltp-global-id;
+	}
+	container dst-ltp {
+	  description "Destination LTP global identifier";
+	  uses oms-ltp-global-id;
+	}
+	list channel-grids {
+	  key "grid-id";
+	  description
+	    "A list of wavelength channel grids, e.g. C-band 80 channel,
+		 along with their availability described in a bitmap.";
+	  uses channel-grid-grouping;
+	  leaf channel-avail-bitmap {
+	    config false;
+	    type binary {
+              length 1024;
+            }
+	    description "Channel availability bitmap";
+	  }
+	}
+	list devices {
+	  key "device-index";
+	  description
+	    "A sequential list of devices, usually EDFAs, located between 
+		source and destination LTP on the OMS link. ";
+	  uses external-device-grouping;
+	}
+	container telemetry {
+	  description "optical layer performance telementry parameters.";
+	  
+	  uses oms-link-telemetry-grouping;
+	}
+    leaf capabilities {
+      type binary {
+	    length 128;
+	  }
+      description "Bitmap flags indicating the capabilities of an OMS link";
+    }
+  }
+
+  grouping fiber-map-grouping {
+    description "Fiber maps grouping";
+	
+	leaf direction {
+	  description "Fiber direction (uni-directional, bi-directional)";
+	  type identityref {
+	    base phy-types:link-direction;
+	  }
+	}
+	container src-ltp {
+	  description "Source LTP global identifier";
+	  uses ltp-local-id;
+	}
+	container dst-ltp {
+	  description "Destination LTP global identifier";
+	  uses ltp-local-id;
+	}
+  }
+  
+  grouping physical-node-telemtry-grouping {
+    description "Physcial node telemetry";
+    container insertion-loss {
+      description "Aggregated node insertion loss in dB";
+      uses estimate-actual-power-grouping;
+    }
+  }
+  
+  grouping phy-node-attributes {
+    description "ROADM physical node attributes";
+
+    leaf phy-node-id {
+      type uint32;
+      description "Physical node identifier";
+    }
+    leaf descr {
+      type string;
+      description "Physical node description";
+    }
+    leaf max-degree {
+      type uint8;
+      description "Maximum ROADM degrees, e.g., 9, 20";
+    }
+    leaf capabilities {
+      type binary {
+	    length 128;
+	  }
+      description "Bitmap flags indicating the capabilities of a node";
+    }
+	list devices {
+	  key "device-id";
+	  description
+	    "A list of devices, e.g. WSS, filter, transponders, OSC, OPM,
+		 on the physical node";
+	  uses internal-device-grouping;
+	}
+	list fiber-maps {
+	  key "src-device-id src-port-id " +
+	      "dst-device-id dst-port-id";
+	  description "fiber map between devices within this node";
+          leaf src-device-id {
+            type leafref {
+              path "../src-ltp/device-id";
+            }
+          }
+          leaf src-port-id {
+            type leafref {
+              path "../src-ltp/port-id";
+            }
+          }
+          leaf dst-device-id {
+            type leafref {
+              path "../dst-ltp/device-id";
+            }
+          }
+          leaf dst-port-id {
+            type leafref {
+              path "../dst-ltp/port-id";
+            }
+          }
+	  uses fiber-map-grouping;
+	}
+	container telemetry {
+	  description "optical layer performance telementry parameters.";
+	  
+	  uses physical-node-telemtry-grouping;
+	}
+  }
+
+  grouping phy-topo-grouping {
+    description "Physical topology parameter grouping.";
+	
+	leaf name {
+	  type string;
+	  description "Physical opology name.";
+	}
+	leaf descr {
+	  type string;
+	  description "Physical topology description.";
+	}
+  }
+  
+ /*
+  * Augmentation
+  */
+  augment "/nw:networks/nw:network/nw:network-types" {
+    description
+      "Introduce new network type for physical topology.";
+    container phy-topology {
+      presence "Indicates physical topology.";
+      description
+        "Its presence identifies the physical topology type.";
+    }
+  }
+
+  augment "/nw:networks/nw:network" {
+    when "nw:network-types/phy-topo:phy-topology" {
+      description
+        "Augmentation parameters apply only for networks with
+         physical topology type.";
+    }
+    description
+      "Configuration parameters for physical topology.";
+    uses phy-topo-grouping;
+  }
+
+  augment "/nw:networks/nw:network/nw:node" {
+    when "../nw:network-types/phy-topo:phy-topology" {
+      description
+        "Augmentation parameters apply only for networks with
+         physical topology type.";
+    }
+    description
+      "Configuration parameters for physical nodes.";
+	uses phy-node-attributes;
+    
+  }
+
+  augment "/nw:networks/nw:network/nt:link" {
+    when "../nw:network-types/phy-topo:phy-topology" {
+      description
+        "Augmentation parameters apply only for networks with
+         physical topology type.";
+    }
+    description
+      "Configuration parameters for physical OMS links.";
+    uses oms-link-attributes;
+  }
+
+  augment "/nw:networks/nw:network/nw:node/"
+        + "nt:termination-point" {
+    when "../../nw:network-types/phy-topo:phy-topology" {
+      description
+        "Augmentation parameters apply only for networks with
+         physical topology type.";
+    }
+    description
+      "Configuration parameters for physical LTP 
+	  (facing externall to the node).";
+    uses ltp-local-id;
+  }
+}

@@ -1,0 +1,306 @@
+module obsp-phy-types {
+
+  namespace "urn:ietf:params:xml:ns:yang:obsp-phy-types";
+
+  /* Replace with IANA when assigned */
+  prefix "phy-types";
+
+  organization
+    "Huawei";
+  contact
+    "Editor: Aihua Guo
+             <mailto:aihuaguo@huawei.com>
+
+     Editor: Hesam Rahimi
+             <mailto:hesam.rahimi@huawei.com>
+
+     Editor: Henry Yu
+             <mailto:henry.yu1@huawei.com>
+
+     Editor: Yuren You
+             <mailto:yuren.you@huawei.com>";
+
+  description
+    "This module defines physical layer data types";
+
+  revision 2018-08-06 {
+    description
+      "Revision 0.1";
+    reference
+      "draft-obsp-phy-types-01";
+  }
+
+ /*
+  * Typedef
+  */
+  typedef power-db {
+    type decimal64 {
+	  fraction-digits 1;
+	  range "-100.0 .. 100.0";
+	}
+	description "Power in dB";
+  }
+  typedef power-dbm {
+    type decimal64 {
+	  fraction-digits 1;
+	  range "-100.0 .. 100.0";
+	}
+	description "Power in dBm";
+  }
+  typedef distance-km {
+    type uint32 {
+	  range "0 .. 10000";
+	}
+	description "Distance in km";
+  }
+  
+  /*
+   * Identities
+   */
+  identity grid-type {
+    description "Type of wavelength channel grid";
+  }
+  identity grid-dwdm-40ch-100ghz {
+    base grid-type;
+    description
+      "40-channel at 100GHz channel spacing";
+  }
+  identity grid-dwdm-80ch-50ghz {
+    base grid-type;
+    description
+      "80-channel at 50GHz channel spacing";
+  }
+  identity grid-dwdm-96ch-50ghz {
+    base grid-type;
+    description
+      "96-channel at 50GHz channel spacing";
+  }
+
+  identity port-type {
+    description "Device port type";
+  }
+  identity wss-network-port {
+    base port-type;
+    description
+      "WSS network port";
+  }
+  identity wss-express-port {
+    base port-type;
+    description
+      "WSS express port (to other WSS)";
+  }
+  identity wss-add-drop-port {
+    base port-type;
+    description
+      "WSS add-drop port (to directionless or 
+	   local add-drop mux/demux)";
+  }
+  identity edfa-in-port {
+    base port-type;
+    description
+      "EDFA input port";
+  }
+  identity edfa-out-port {
+    base port-type;
+    description
+      "EDFA output port";
+  }
+  identity edfa-midstage-port {
+    base port-type;
+    description
+      "EDFA mid-stage port";
+  }
+  identity mdmx-network-port {
+    base port-type;
+    description
+      "mux/demux network port (to WSS)";
+  }
+  identity mdmx-client-port {
+    base port-type;
+    description
+      "mux/demux client port (to transponder)";
+  }
+  identity osc-client-port {
+    base port-type;
+    description
+      "OSC client port (to packet processing layer)";
+  }
+  identity osc-network-port {
+    base port-type;
+    description
+      "OSC network port (to OSC+DWDM combiner)";
+  }
+  identity osc-dwdm-combine-in-port {
+    base port-type;
+    description
+      "Port where DWDM and OSC are mux/demux'ed";
+  }
+  identity fiber-out-port {
+    base port-type;
+    description
+      "Port that faces the remote nodes (exit from the node)";
+  }
+  identity xpdr-network-port {
+    base port-type;
+    description
+      "Transponder network port";
+  }
+
+  identity edfa-role {
+    description "EDFA role";
+  }
+  identity edfa-pre-amp {
+    base edfa-role;
+    description
+      "Pre-amp";
+  }
+  identity edfa-post-amp {
+    base edfa-role;
+    description
+      "Post-amp";
+  }
+  identity edfa-in-line-amp {
+    base edfa-role;
+    description
+      "In-line amplifier";
+  }
+  identity edfa-add-amp {
+    base edfa-role;
+    description
+      "Add amplifier";
+  }
+  identity edfa-drop-amp {
+    base edfa-role;
+    description
+      "Drop amplifier";
+  }
+
+  identity edfa-mode {
+    description "EDFA mode";
+  }
+  identity edfa-constant-gain {
+    base edfa-mode;
+    description
+      "EDFA constant gain mode";
+  }
+  identity edfa-constant-power {
+    base edfa-mode;
+    description
+      "EDFA constant power mode";
+  }
+
+  identity device-subtype {
+    description "Devicd subtype";
+  }
+
+  identity edfa-obu101 {
+    base device-subtype;
+    description
+      "EDFA OBU 101";
+  }
+  identity wss-9d-roadm {
+    base device-subtype;
+    description
+      "WSS 9 degree";
+  }
+
+  identity xpdr-coherent-tunable {
+    base device-subtype;
+    description
+      "xpdr-coherent-tunable";
+  }
+
+  identity device-type {
+    description "Device type";
+  }
+  identity device-wss {
+    base device-type;
+    description
+      "WSS";
+  }
+  identity device-edfa {
+    base device-type;
+    description
+      "EDFA";
+  }
+  identity device-mdmx {
+    base device-type;
+    description
+      "Mux/demux";
+  }
+  identity device-osc {
+    base device-type;
+    description
+      "OSC module";
+  }
+  identity device-xpdr {
+    base device-type;
+    description
+      "Transponder";
+  }
+  identity device-fiber {
+    base device-type;
+    description
+      "Fiber";
+  }
+  identity device-fiu {
+      base device-type;
+      description
+        "FIU";
+  }
+  
+  identity link-direction {
+    description "Link direction";
+  }
+  identity link-uni {
+    base link-direction;
+    description "Uni-directional";
+  }
+  identity link-bi {
+    base link-direction;
+    description "Bi-directional";
+  }
+
+  identity connection-type {
+    description "Connection type";
+  }
+  identity conn-node {
+    base connection-type;
+    description
+      "Node connection.";
+  }
+  identity conn-oms {
+    base connection-type;
+    description
+      "OMS link connection.";
+  }
+
+  identity protection-role {
+    description "Protection role";
+  }
+  identity prot-primary {
+    base protection-role;
+    description
+      "Primary connection";
+  }
+  identity prot-secondary {
+    base protection-role;
+    description
+      "Secondary connection";
+  }
+  
+  identity direction {
+    description "Connection directions";
+  }
+  identity dir-forward {
+    base direction;
+    description
+      "Forward direction";
+  }
+  identity dir-reverse {
+    base direction;
+    description
+      "Reverse direction";
+  }
+  
+}

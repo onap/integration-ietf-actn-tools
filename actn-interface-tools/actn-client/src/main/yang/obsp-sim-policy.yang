@@ -1,0 +1,58 @@
+module obsp-sim-policy {
+  yang-version 1.1;
+
+  namespace "urn:ietf:params:xml:ns:yang:obsp-sim-policy";
+  prefix "sim-policy";
+
+  organization
+    "Huawei";
+  contact
+    "Editor: Aihua Guo
+             <mailto:aihuaguo@huawei.com>
+
+     Editor: Hesam Rahimi
+             <mailto:hesam.rahimi@huawei.com>
+
+     Editor: Henry Yu
+             <mailto:henry.yu1@huawei.com>
+
+     Editor: Yuren You
+             <mailto:yuren.you@huawei.com>";
+
+  description
+    "This module defines a generic policy configuration model for
+	 OBSP simulation";
+
+  revision 2019-03-15 {
+    description
+      "Revision 0.1";
+  }
+
+ /*
+  * Groupings
+  */
+
+  grouping obsp-sim-policy-grouping {
+    description "Simulation policy grouping.";
+	
+    leaf policy-name {
+      type string;
+      description "policy identifier as generic string.";
+    }
+	
+    leaf policy-value {
+      type string;
+      description "policy value as generic string";
+    }
+  }
+
+  container obsp-sim-policy {
+    description "OBSP Simulation policies.";
+	
+    list policies {
+      key "policy-name";
+      description "policy list.";
+      uses obsp-sim-policy-grouping;
+    }
+  }
+} 
