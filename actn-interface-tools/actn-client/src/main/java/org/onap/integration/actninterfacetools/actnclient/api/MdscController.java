@@ -63,8 +63,8 @@ public interface MdscController {
     Future<OssMessage> createOtnTunnel(DefaultTunnel defaultTunnel);
 
     /**
-     * Create otn tunnel
-     * @param tunnelObject
+     * Create OTN TE tunnel on the phsical network
+     * @param tunnelObject OTN Tunnel configuration encoded in JSON
      * @return
      */
     Future<OssMessage> createOtnTunnel(ObjectNode tunnelObject);
