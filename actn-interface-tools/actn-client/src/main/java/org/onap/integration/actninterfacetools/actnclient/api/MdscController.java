@@ -67,5 +67,7 @@ public interface MdscController {
      * @param tunnelObject
      * @return
      */
+
+    //By using different parameter to realize the createOtnTunnel function
     Future<OssMessage> createOtnTunnel(ObjectNode tunnelObject);
 }
