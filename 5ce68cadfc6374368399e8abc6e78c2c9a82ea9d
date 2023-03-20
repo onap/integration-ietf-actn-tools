@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7d0174ac_fbfc8499",
+        "filename": "sample-apps/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-03-20T21:16:21Z",
+      "side": 1,
+      "message": "should the sample app depend on the whole actn-library?",
+      "range": {
+        "startLine": 39,
+        "startChar": 8,
+        "endLine": 44,
+        "endChar": 21
+      },
+      "revId": "5ce68cadfc6374368399e8abc6e78c2c9a82ea9d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
