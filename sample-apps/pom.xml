@@ -3,7 +3,7 @@
   ~   ============LICENSE_START=======================================================
   ~   Actn Interface Tools
   ~   ================================================================================
-  ~   Copyright (C) 2022 Huawei Canada Limited.
+  ~   Copyright (C) 2023 Huawei Canada Limited.
   ~   ================================================================================
   ~   Licensed under the Apache License, Version 2.0 (the "License");
   ~   you may not use this file except in compliance with the License.
@@ -18,48 +18,32 @@
   ~   limitations under the License.
   ~   ============LICENSE_END=========================================================
   -->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.onap.integration.ietf-actn-tools</groupId>
-    <artifactId>actn-interface-tools</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>sample-apps</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>actn-model</module>
-        <module>actn-client</module>
-    </modules>
+    <name>sample-app</name>
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>22.0</version>
-            <scope>compile</scope>
+            <groupId>org.onap.integration.ietf-actn-tools</groupId>
+            <artifactId>actn-model</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.0.1</version>
-            <scope>compile</scope>
+            <groupId>org.onap.integration.ietf-actn-tools</groupId>
+            <artifactId>actn-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.onosproject</groupId>-->
 <!--            <artifactId>onlab-misc</artifactId>-->
 <!--            <version>2.2.0</version>-->
 <!--        </dependency>-->
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.scr.annotations</artifactId>
-            <scope>provided</scope>
-            <version>1.9.12</version>
-        </dependency>
     </dependencies>
-
 </project>
