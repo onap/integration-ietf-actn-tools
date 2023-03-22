@@ -46,6 +46,30 @@
       "revId": "5ce68cadfc6374368399e8abc6e78c2c9a82ea9d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0199b811_0102dfd2",
+        "filename": "sample-apps/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-03-22T14:37:59Z",
+      "side": 1,
+      "message": "ok. sounds good.",
+      "parentUuid": "658e1694_2aeb5bc8",
+      "range": {
+        "startLine": 39,
+        "startChar": 8,
+        "endLine": 44,
+        "endChar": 21
+      },
+      "revId": "5ce68cadfc6374368399e8abc6e78c2c9a82ea9d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
