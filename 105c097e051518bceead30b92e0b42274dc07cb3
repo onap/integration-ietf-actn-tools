@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "677a5d06_8f22cbcf",
+        "filename": "actn-interface-tools/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-03-24T21:50:08Z",
+      "side": 1,
+      "message": "can we remove this dependency?",
+      "range": {
+        "startLine": 52,
+        "startChar": 7,
+        "endLine": 56,
+        "endChar": 21
+      },
+      "revId": "105c097e051518bceead30b92e0b42274dc07cb3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4808327f_49d537f9",
+        "filename": "sample-apps/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-03-24T21:50:08Z",
+      "side": 1,
+      "message": "can we remove this dependency?",
+      "range": {
+        "startLine": 43,
+        "startChar": 7,
+        "endLine": 47,
+        "endChar": 21
+      },
+      "revId": "105c097e051518bceead30b92e0b42274dc07cb3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
