@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9be794d8_482fb862",
+        "filename": "actn-interface-tools/actn-client/src/main/java/org/onap/integration/actninterfacetools/actnclient/impl/ActnClientServiceImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-05-23T18:41:50Z",
+      "side": 1,
+      "message": "add copyright",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 19
+      },
+      "revId": "5ae73c5a87c0b7233be452188e79bdb09dbce994",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f92274e_4dd513e7",
+        "filename": "actn-interface-tools/actn-client/src/main/java/org/onap/integration/actninterfacetools/actnclient/impl/PncClientInstance.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-05-23T18:41:50Z",
+      "side": 1,
+      "message": "add copyright",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "5ae73c5a87c0b7233be452188e79bdb09dbce994",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03b76c24_1456058b",
+        "filename": "actn-interface-tools/global-control/api/src/main/java/org/onap/integration/actninterfacetools/globalapi/GlobalService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-05-23T18:41:50Z",
+      "side": 1,
+      "message": "add copyright",
+      "range": {
+        "startLine": 1,
+        "startChar": 1,
+        "endLine": 1,
+        "endChar": 12
+      },
+      "revId": "5ae73c5a87c0b7233be452188e79bdb09dbce994",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e068e31f_0369f461",
+        "filename": "actn-interface-tools/global-control/api/src/main/java/org/onap/integration/actninterfacetools/globalapi/GlobalService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-05-23T18:41:50Z",
+      "side": 1,
+      "message": "please use explicit import clauses",
+      "range": {
+        "startLine": 4,
+        "startChar": 38,
+        "endLine": 4,
+        "endChar": 43
+      },
+      "revId": "5ae73c5a87c0b7233be452188e79bdb09dbce994",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a1e93ff_90e8d668",
+        "filename": "actn-interface-tools/yang-utils/src/main/java/org/onap/integration/actninterfacetools/yangutils/YangToolsUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-05-23T18:41:50Z",
+      "side": 1,
+      "message": "please use explicit imports",
+      "range": {
+        "startLine": 52,
+        "startChar": 28,
+        "endLine": 52,
+        "endChar": 36
+      },
+      "revId": "5ae73c5a87c0b7233be452188e79bdb09dbce994",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
