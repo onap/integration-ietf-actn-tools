@@ -2,7 +2,7 @@
  *   ============LICENSE_START=======================================================
  *   Actn Interface Tools
  *   ================================================================================
- *   Copyright (C) 2022 Huawei Canada Limited.
+ *   Copyright (C) 2023 Huawei Canada Limited.
  *   ================================================================================
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,18 +17,12 @@
  *   limitations under the License.
  *   ============LICENSE_END=========================================================
  */
+package org.onap.integration.actninterfacetools.globalapi;
 
-package org.onap.integration.actninterfacetools.actnclient.api;
+import org.onap.integration.actninterfacetools.protocol.restconf.PncInstance;
 
-import java.util.concurrent.Future;
-
-public interface PncClient {
-
-    <T> Future<YangValue<T>> asyncGets(String key, Transcoder<T> tc);
-
-    Future<YangValue<Object>> asyncGets(String key);
-
-    <T> Future<Boolean> put(String key, T o, Transcoder<T> tc);
-
-    Future<Boolean> put(String key, Object o);
+public interface ActnClientService {
+    void registerDataConverter(ActnDataConverter converter);
+    PncClient getPncClient(PncInstance pncInstance);
 }
+

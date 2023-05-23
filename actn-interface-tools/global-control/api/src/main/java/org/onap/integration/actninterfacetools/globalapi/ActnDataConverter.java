@@ -17,26 +17,26 @@
  *   limitations under the License.
  *   ============LICENSE_END=========================================================
  */
-package org.onap.integration.actninterfacetools.actnclient.api;
+package org.onap.integration.actninterfacetools.globalapi;
 
 
 import org.onosproject.yang.gen.v11.ietfethtranservice.rev20210111.ietfethtranservice.DefaultEthtSvc;
 import org.onosproject.yang.gen.v11.ietfnetwork.rev20180226.ietfnetwork.networks.Network;
 import org.onosproject.yang.gen.v11.ietfte.rev20210220.ietfte.tunnelsgrouping.tunnels.DefaultTunnel;
 public abstract class ActnDataConverter {
-    CustomerOtnTopology convertActnOtnTopology(Network actnOtnTopology) throws Exception {
+    public CustomerOtnTopology convertActnOtnTopology(Network actnOtnTopology) throws Exception {
         throw new Exception("unsupported method");
     }
-    CustomerOtnTunnel convertActnOtnTunnel(DefaultTunnel actnOtnTunnel) throws Exception {
+    public CustomerOtnTunnel convertActnOtnTunnel(DefaultTunnel actnOtnTunnel) throws Exception {
         throw new Exception("unsupported method");
     }
-    DefaultTunnel convertActnOtnTunnel(CustomerOtnTunnel customerOtnTunnel) throws Exception {
+    public DefaultTunnel convertActnOtnTunnel(CustomerOtnTunnel customerOtnTunnel) throws Exception {
         throw new Exception("unsupported method");
     }
-    CustomerEthService convertActnEthService(DefaultEthtSvc actnEthService) throws Exception {
+    public CustomerEthService convertActnEthService(DefaultEthtSvc actnEthService) throws Exception {
         throw new Exception("unsupported method");
     }
-    DefaultEthtSvc convertActnEthService(CustomerEthService customerEthService) throws Exception {
+    public DefaultEthtSvc convertActnEthService(CustomerEthService customerEthService) throws Exception {
         throw new Exception("unsupported method");
     }
 }

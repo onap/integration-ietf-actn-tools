@@ -2,7 +2,7 @@
  *   ============LICENSE_START=======================================================
  *   Actn Interface Tools
  *   ================================================================================
- *   Copyright (C) 2022 Huawei Canada Limited.
+ *   Copyright (C) 2023 Huawei Canada Limited.
  *   ================================================================================
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,44 +17,8 @@
  *   limitations under the License.
  *   ============LICENSE_END=========================================================
  */
-
-package org.onap.integration.actninterfacetools.actnclient.api;
-
 /**
- * Base class for OSS internal message
+ * The utilities for conversions between TE Topology core subsystem and
+ * IETF TE Topology Yang generated Java code.
  */
-public class OssMessage {
-    protected int xid;
-
-    public OssMessage() {
-
-    }
-
-    public int getXid() {
-        return xid;
-    }
-
-    public OssMessage setXid(int xid) {
-        this.xid = xid;
-        return this;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof OssMessage)) {
-            return false;
-        }
-        OssMessage other = (OssMessage) obj;
-
-        if (xid != other.xid) {
-            return false;
-        }
-        return true;
-    }
-}
+package org.onap.integration.actninterfacetools.yangutils;
