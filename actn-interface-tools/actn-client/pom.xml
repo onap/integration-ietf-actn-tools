@@ -31,6 +31,7 @@
 
     <groupId>org.onap.integration.ietf-actn-tools</groupId>
     <artifactId>actn-client</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -40,6 +41,7 @@
         <guava.version>22.0</guava.version>
     </properties>
     <dependencies>
+
         <dependency>
             <groupId>org.onap.integration.ietf-actn-tools</groupId>
             <artifactId>actn-model</artifactId>
@@ -80,7 +82,11 @@
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.8.8</version>
+        </dependency>
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>retrofit</artifactId>
@@ -100,6 +106,29 @@
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>1.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.integration.ietf-actn-tools</groupId>
+            <artifactId>restconf-client-ctl</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.integration.ietf-actn-tools</groupId>
+            <artifactId>globalapi</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.integration.ietf-actn-tools</groupId>
+            <artifactId>yang-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
