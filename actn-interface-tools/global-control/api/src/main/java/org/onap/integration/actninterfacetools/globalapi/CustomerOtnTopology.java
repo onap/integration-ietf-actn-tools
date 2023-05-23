@@ -17,7 +17,7 @@
  *   limitations under the License.
  *   ============LICENSE_END=========================================================
  */
-package org.onap.integration.actninterfacetools.actnclient.api;
+package org.onap.integration.actninterfacetools.globalapi;
 
-public abstract class CustomerTopology {
+public abstract class CustomerOtnTopology extends CustomerTopology {
 }
