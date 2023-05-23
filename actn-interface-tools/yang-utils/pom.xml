@@ -3,7 +3,7 @@
   ~   ============LICENSE_START=======================================================
   ~   Actn Interface Tools
   ~   ================================================================================
-  ~   Copyright (C) 2022 Huawei Canada Limited.
+  ~   Copyright (C) 2023 Huawei Canada Limited.
   ~   ================================================================================
   ~   Licensed under the Apache License, Version 2.0 (the "License");
   ~   you may not use this file except in compliance with the License.
@@ -18,13 +18,109 @@
   ~   limitations under the License.
   ~   ============LICENSE_END=========================================================
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!--    <parent>-->
+    <!--        <groupId>org.onosproject</groupId>-->
+    <!--        <artifactId>onos-apps</artifactId>-->
+    <!--        <version>1.11.0-SNAPSHOT</version>-->
+    <!--        <relativePath>../pom.xml</relativePath>-->
+    <!--    </parent>-->
     <parent>
-        <groupId>org.onap.integration.ietf-actn-tools</groupId>
         <artifactId>actn-interface-tools</artifactId>
+        <groupId>org.onap.integration.ietf-actn-tools</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+    <groupId>org.onap.integration.ietf-actn-tools</groupId>
+    <version>1.0-SNAPSHOT</version>
     <artifactId>yang-utils</artifactId>
+    <packaging>jar</packaging>
+
+    <description>IETF TE NBI Utilities</description>
+
+    <properties>
+        <yang-tool-version>2.6.1</yang-tool-version>
+        <onos.app.name>yang-utils</onos.app.name>
+        <onos.app.origin>HUAWEI</onos.app.origin>
+    </properties>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.onosproject/onos-yang-utils-generator -->
+        <dependency>
+            <groupId>org.onap.integration.ietf-actn-tools</groupId>
+            <artifactId>actn-model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.onosproject</groupId>
+            <artifactId>onos-yang-utils-generator</artifactId>
+            <version>1.11</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.8.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.onosproject</groupId>
+            <artifactId>onos-yang-model</artifactId>
+            <version>${yang-tool-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.onosproject</groupId>
+            <artifactId>onos-yang-runtime</artifactId>
+            <version>${yang-tool-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava-testlib</artifactId>
+            <version>22.0</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <scope>test</scope>
+            <version>3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.onosproject</groupId>
+            <artifactId>onos-yang-serializers-utils</artifactId>
+            <version>2.6.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr.annotations</artifactId>
+            <scope>provided</scope>
+            <version>1.9.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.integration.ietf-actn-tools</groupId>
+            <artifactId>globalapi</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
 </project>
