@@ -2,7 +2,7 @@
  *   ============LICENSE_START=======================================================
  *   Actn Interface Tools
  *   ================================================================================
- *   Copyright (C) 2022 Huawei Canada Limited.
+ *   Copyright (C) 2023 Huawei Canada Limited.
  *   ================================================================================
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,16 +17,7 @@
  *   limitations under the License.
  *   ============LICENSE_END=========================================================
  */
+package org.onap.integration.actninterfacetools.globalapi;
 
-package org.onap.integration.actninterfacetools.actnclient.api;
-
-public class YangValue<T> {
-    private final long version;
-    private final T value;
-
-    public YangValue(long v, T val) {
-        super();
-        version = v;
-        value = val;
-    }
+public abstract class CustomerEthService {
 }
