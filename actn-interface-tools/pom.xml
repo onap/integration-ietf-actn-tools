@@ -34,6 +34,8 @@
         <module>global-control</module>
         <module>yang-utils</module>
         <module>restconf-client</module>
+        <module>global-control/api</module>
+        <module>global-control/app</module>
     </modules>
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
