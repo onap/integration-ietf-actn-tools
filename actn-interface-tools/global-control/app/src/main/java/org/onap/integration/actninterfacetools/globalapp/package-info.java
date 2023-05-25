@@ -17,17 +17,8 @@
  *   limitations under the License.
  *   ============LICENSE_END=========================================================
  */
-package org.onap.integration.actninterfacetools.actnclient.api;
 
-public interface ActnInterface {
-    CustomerTopology getNetworkTopology(String topologyId);
-
-    void createOtnTunnel(CustomerOtnTunnel customerOtnTunnel);
-
-    CustomerOtnTunnel getOtnTunnel(String actnOtnTunnelId);
-
-    void createEthService(CustomerEthService customerEthService);
-
-    CustomerEthService getEthService(String actnEthServiceId);
-}
-
+/**
+ * Base application to bring in the YANG libraries and assemble them for other apps to use.
+ */
+package org.onap.integration.actninterfacetools.globalapp;
