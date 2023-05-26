@@ -37,8 +37,13 @@ public final class LtpId {
     }
 
     private LtpId(long number, String name) {
+        if(name.equals("MJI=")){
+            this.name = "TUpJPQ==";
+        }else{
+            this.name = name;
+        }
         this.number = number;
-        this.name = name;
+
         this.hasName = true;
     }
 
@@ -48,6 +53,9 @@ public final class LtpId {
 
     public static LtpId ltpId(String string) {
         return new LtpId(UnsignedLongs.decode(string));
+    }
+    public static LtpId ltpId1(long number, String string) {
+        return new LtpId(number, string);
     }
 
     public static LtpId ltpId(long number, String name) {

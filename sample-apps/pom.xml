@@ -24,10 +24,11 @@
     <groupId>org.onap.integration.ietf-actn-tools</groupId>
     <artifactId>sample-apps</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>sample-app</name>
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <slf4j.version>1.7.21</slf4j.version>
+        <yang-tool-version>2.6.1</yang-tool-version>
     </properties>
     <dependencies>
         <dependency>
@@ -39,6 +40,58 @@
             <groupId>org.onap.integration.ietf-actn-tools</groupId>
             <artifactId>actn-client</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.integration.ietf-actn-tools</groupId>
+            <artifactId>globalapi</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.integration.ietf-actn-tools</groupId>
+            <artifactId>globalapp</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.integration.ietf-actn-tools</groupId>
+            <artifactId>yang-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.integration.ietf-actn-tools</groupId>
+            <artifactId>restconf-client-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>22.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.onosproject</groupId>
+            <artifactId>onos-yang-model</artifactId>
+            <version>${yang-tool-version}</version>
         </dependency>
     </dependencies>
 </project>
