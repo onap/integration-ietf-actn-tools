@@ -19,8 +19,6 @@
  */
 package org.onap.integration.actninterfacetools.sampleapp.mpiconverter.model;
 
-import org.onap.integration.actninterfacetools.actnclient.api.CustomerEthService;
-
 import java.util.List;
 
 public interface EthSrv {

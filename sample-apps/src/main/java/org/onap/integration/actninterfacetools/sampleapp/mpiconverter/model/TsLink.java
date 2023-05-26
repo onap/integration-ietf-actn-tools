@@ -19,7 +19,7 @@
  */
 package org.onap.integration.actninterfacetools.sampleapp.mpiconverter.model;
 
-import org.onap.integration.actninterfacetools.actnclient.api.CustomerOtnTunnel;
+import org.onap.integration.actninterfacetools.globalapi.CustomerOtnTunnel;
 
 import java.util.List;
 import java.util.Objects;
