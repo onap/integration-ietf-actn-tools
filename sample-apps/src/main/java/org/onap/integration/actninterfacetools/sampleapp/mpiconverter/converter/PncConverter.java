@@ -19,10 +19,10 @@
  */
 package org.onap.integration.actninterfacetools.sampleapp.mpiconverter.converter;
 
-import org.onap.integration.actninterfacetools.actnclient.api.ActnDataConverter;
-import org.onap.integration.actninterfacetools.actnclient.api.CustomerEthService;
-import org.onap.integration.actninterfacetools.actnclient.api.CustomerOtnTopology;
-import org.onap.integration.actninterfacetools.actnclient.api.CustomerOtnTunnel;
+import org.onap.integration.actninterfacetools.globalapi.ActnDataConverter;
+import org.onap.integration.actninterfacetools.globalapi.CustomerEthService;
+import org.onap.integration.actninterfacetools.globalapi.CustomerOtnTopology;
+import org.onap.integration.actninterfacetools.globalapi.CustomerOtnTunnel;
 import org.onap.integration.actninterfacetools.sampleapp.mpiconverter.model.*;
 import org.onap.integration.actninterfacetools.sampleapp.mpiconverter.model.OduType;
 import org.onosproject.yang.gen.v1.ietfyangtypes.rev20210414.ietfyangtypes.DottedQuad;
@@ -56,9 +56,10 @@ import org.onosproject.yang.gen.v11.ietfethtranservice.rev20210111.ietfethtranse
 import org.onosproject.yang.gen.v11.ietfethtranservice.rev20210111.ietfethtranservice.vlanclassification.individualbundlingvlan.IndividualVlan;
 import org.onosproject.yang.gen.v11.ietfethtrantypes.rev20191103.ietfethtrantypes.*;
 import org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.*;
-import org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.otnlabelstep.RangeType;
-import org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.otnlabelstep.rangetype.DefaultTribPort;
+import org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.otnlabelstartend.RangeType;
+import org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.otnlabelstartend.rangetype.DefaultTribPort;
 import org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.otnlinkbandwidth.Odulist;
+import org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.otnpathbandwidth.Otn;
 import org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.otnpathbandwidth.otn.oduflextype.DefaultGfpNk;
 import org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.otnpathbandwidth.otn.oduflextype.GfpNk;
 import org.onosproject.yang.gen.v11.ietfte.rev20210220.ietfte.pathconstraintscommon.DefaultPathOutSegment;
@@ -113,7 +114,6 @@ import org.onosproject.yang.gen.v11.ietftetypes.rev20200610.ietftetypes.tetopolo
 import org.onosproject.yang.gen.v11.ietftetypes.rev20200610.ietftetypes.tetpid.TeTpIdUnion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.math.BigInteger;
 import java.util.*;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -136,14 +136,16 @@ public class PncConverter extends ActnDataConverter {
 
     public CustomerOtnTunnel convertActnOtnTunnel(DefaultTunnel actnOtnTunnel) throws Exception {
         checkNotNull(actnOtnTunnel, "convertActnOtnTunnel: actnOtnTunnel is null");
-        TeNodeKey srcNode = (actnOtnTunnel.srcTunnelTpId() != null && !(new String(actnOtnTunnel.srcTunnelTpId())).isEmpty()) ? TeNodeKey.of(actnOtnTunnel.source().toString()) : new TeNodeKey(-1, -1, -1, -1);
-        LtpId srcLtpId = (actnOtnTunnel.srcTunnelTpId() != null && !(new String(actnOtnTunnel.srcTunnelTpId())).isEmpty()) ? LtpId.ltpId(actnOtnTunnel.srcTunnelTpId().toString()) : LtpId.ltpId(-1);
+        TeNodeKey srcNode = (actnOtnTunnel.source() != null && actnOtnTunnel.source().dottedQuad().string() != "") ? TeNodeKey.of(actnOtnTunnel.source().toString()) : new TeNodeKey(-1, -1, -1, -1);
+        LtpId srcLtpId = (actnOtnTunnel.srcTunnelTpId() != null && !(new String(actnOtnTunnel.srcTunnelTpId())).isEmpty()) ? LtpId.ltpId1(PncUtils.byteArray2Long(actnOtnTunnel.srcTunnelTpId()), new String(actnOtnTunnel.srcTunnelTpId())) : LtpId.ltpId(-1);
+        //PncUtils.byteArray2Long(actnOtnTunnel.srcTunnelTpId())
         LTPoint srcLtPoint = new LTPoint(srcNode, srcLtpId);
-        TsLink srcLink = new TsLink("defaultSrcId",srcLtPoint,srcLtPoint, ACTIVE, org.onap.integration.actninterfacetools.sampleapp.mpiconverter.model.Link.Type.REGULAR);
-        TeNodeKey dstNode = (actnOtnTunnel.dstTunnelTpId() != null && !(new String(actnOtnTunnel.dstTunnelTpId())).isEmpty()) ? TeNodeKey.of(actnOtnTunnel.destination().toString()) : new TeNodeKey(-1, -1, -1, -1);
-        LtpId dstLtpId = (actnOtnTunnel.dstTunnelTpId() != null && !(new String(actnOtnTunnel.dstTunnelTpId())).isEmpty()) ? LtpId.ltpId(actnOtnTunnel.dstTunnelTpId().toString()) : LtpId.ltpId(-1);
+        TsLink srcLink = new TsLink("defaultSrcId", srcLtPoint, srcLtPoint, ACTIVE, org.onap.integration.actninterfacetools.sampleapp.mpiconverter.model.Link.Type.REGULAR);
+        TeNodeKey dstNode = (actnOtnTunnel.destination() != null && actnOtnTunnel.destination().dottedQuad().string() != "") ? TeNodeKey.of(actnOtnTunnel.destination().toString()) : new TeNodeKey(-1, -1, -1, -1);
+        LtpId dstLtpId = (actnOtnTunnel.dstTunnelTpId() != null && !(new String(actnOtnTunnel.dstTunnelTpId())).isEmpty()) ? LtpId.ltpId1(PncUtils.byteArray2Long(actnOtnTunnel.dstTunnelTpId()), new String(actnOtnTunnel.dstTunnelTpId())) : LtpId.ltpId(-1);
+        //PncUtils.byteArray2Long(actnOtnTunnel.dstTunnelTpId())
         LTPoint dstLtPoint = new LTPoint(dstNode, dstLtpId);
-        TsLink dstLink = new TsLink("defaultDstId",dstLtPoint,dstLtPoint, ACTIVE, org.onap.integration.actninterfacetools.sampleapp.mpiconverter.model.Link.Type.REGULAR);
+        TsLink dstLink = new TsLink("defaultDstId", dstLtPoint, dstLtPoint, ACTIVE, org.onap.integration.actninterfacetools.sampleapp.mpiconverter.model.Link.Type.REGULAR);
         List<TsLink> linkList = new ArrayList<>();
         linkList.add(srcLink);
         linkList.add(dstLink);
@@ -152,34 +154,36 @@ public class PncConverter extends ActnDataConverter {
                 actnOtnTunnel.teBandwidth().technology() instanceof org.onosproject.yang.gen.v11.ietfotntunnel.rev20210625.
                         ietfotntunnel.te.tunnels.tunnel.tebandwidth.technology.augmentedtetechnology.DefaultOtn) {
             TeBandwidth teBandwidth = actnOtnTunnel.teBandwidth();
-            OduResource oduRsrce = teBandwidthToOduResource(teBandwidth);
+            OduResource oduRsrce = teBandwidth2OduResource(teBandwidth);
             tsTunnel.bw(oduRsrce);
         } else {
             log.warn("Missing valid tunnel bandwidth info inside Otn DefaultTunnel");
         }
         return tsTunnel;
     }
+
     public DefaultTunnel convertActnOtnTunnel(CustomerOtnTunnel customerOtnTunnel) throws Exception {
         checkNotNull(customerOtnTunnel, "convertActnOtnTunnel: customerOtnTunnel is null");
         DefaultTunnel defaultTunnel = new DefaultTunnel();
-        LTPoint src = ((TsTunnel)customerOtnTunnel).src();
-        LTPoint dst = ((TsTunnel)customerOtnTunnel).dst();
+        LTPoint src = ((TsTunnel) customerOtnTunnel).src();
+        LTPoint dst = ((TsTunnel) customerOtnTunnel).dst();
         TeNodeKey srcTeNodeKey = src.tsDeviceId();
         TeNodeKey dstTeNodeKey = dst.tsDeviceId();
         String srcTeNodeId = srcTeNodeKey.toString();
         String dstTeNodeId = dstTeNodeKey.toString();
         defaultTunnel.source(TeNodeId.fromString(srcTeNodeId));
         defaultTunnel.destination(TeNodeId.fromString(dstTeNodeId));
-        defaultTunnel.srcTunnelTpId(src.ltPointId().toString().getBytes());
-        defaultTunnel.name(((TsTunnel)customerOtnTunnel).name());
+        defaultTunnel.dstTunnelTpId(dst.ltPointId().toString().getBytes());
+        String a = new String(dst.ltPointId().toString().getBytes());
+        defaultTunnel.name(((TsTunnel) customerOtnTunnel).name());
 
         org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.otnpathbandwidth.Otn layer1Otn = new org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.otnpathbandwidth.DefaultOtn();
         GfpNk oduflexType = new DefaultGfpNk();
-        oduflexType.gfpn((short) ((TsTunnel)customerOtnTunnel).bw().getNumberOfOdu(OduType.ODUFLEX));
+        oduflexType.gfpn((short) ((TsTunnel) customerOtnTunnel).bw().getNumberOfOdu(OduType.ODUFLEX));
         layer1Otn.oduType(Oduflex.class);
         layer1Otn.oduflexType(oduflexType);
         Technology otn = new org.onosproject.yang.gen.v11.ietfotntunnel.rev20210625.ietfotntunnel.te.tunnels.tunnel.tebandwidth.technology.augmentedtetechnology.DefaultOtn();
-        ((org.onosproject.yang.gen.v11.ietfotntunnel.rev20210625.ietfotntunnel.te.tunnels.tunnel.tebandwidth.technology.augmentedtetechnology.DefaultOtn)otn).otn(layer1Otn);
+        ((org.onosproject.yang.gen.v11.ietfotntunnel.rev20210625.ietfotntunnel.te.tunnels.tunnel.tebandwidth.technology.augmentedtetechnology.DefaultOtn) otn).otn(layer1Otn);
         TeBandwidth teBandwidth = new DefaultTeBandwidth();
         teBandwidth.technology(otn);
         defaultTunnel.teBandwidth(teBandwidth);
@@ -210,11 +214,12 @@ public class PncConverter extends ActnDataConverter {
         org.onosproject.yang.gen.v11.ietfotntunnel.rev20210625.ietfotntunnel.te.tunnels.tunnel.primarypaths.primarypath.pathinsegment.labelrestrictions.labelrestriction.labelstart.telabel.technology.augmentedtetechnology.DefaultOtn otnTpnTech = new org.onosproject.yang.gen.v11.ietfotntunnel.rev20210625.ietfotntunnel.te.tunnels.tunnel.primarypaths.primarypath.pathinsegment.labelrestrictions.labelrestriction.labelstart.telabel.technology.augmentedtetechnology.DefaultOtn();
         OtnTpn otnTpn = new OtnTpn(1);
         RangeType rangeType = new DefaultTribPort();
-        ((DefaultTribPort)rangeType).otnTpn(otnTpn);
-        otnTpnTech.rangeType((org.onosproject.yang.gen.v11.ietflayer1types.rev20210219.ietflayer1types.otnlabelstartend.RangeType) rangeType);
+        ((DefaultTribPort) rangeType).otnTpn(otnTpn);
+        otnTpnTech.rangeType(rangeType);
         teLabel.technology(otnTpnTech);
         labelStart.teLabel(teLabel);
         labelRestriction.labelStart(labelStart);
+        labelRestrictionList.add(labelRestriction);
         labelRestrictions.labelRestriction(labelRestrictionList);
         pathOutSegment.labelRestrictions(labelRestrictions);
         primaryPath.pathOutSegment(pathOutSegment);
@@ -223,12 +228,13 @@ public class PncConverter extends ActnDataConverter {
         defaultTunnel.primaryPaths(primaryPaths);
         return defaultTunnel;
     }
+
     public CustomerEthService convertActnEthService(DefaultEthtSvc actnEthService) throws Exception {
         checkNotNull(actnEthService, "convertActnEthService: actnEthService is null");
         List<EthtSvcInstances> ethtSvcInstances = actnEthService.ethtSvcInstances();
-        if(ethtSvcInstances!=null && !ethtSvcInstances.isEmpty()){
+        if (ethtSvcInstances != null && !ethtSvcInstances.isEmpty()) {
             List<EthSrvInstance> ethSrvInstances = new ArrayList<>();
-            for(EthtSvcInstances ethtSvcInstance: ethtSvcInstances){
+            for (EthtSvcInstances ethtSvcInstance : ethtSvcInstances) {
                 String ethtSvcName = ethtSvcInstance.ethtSvcName();
                 String ethtSvcDescr = ethtSvcInstance.ethtSvcDescr();
                 TeTopologyIdentifier teTopologyIdentifier = ethtSvcInstance.teTopologyIdentifier();
@@ -236,22 +242,30 @@ public class PncConverter extends ActnDataConverter {
                 long clientId = teTopologyIdentifier.clientId().uint32();
                 String topologyId = teTopologyIdentifier.topologyId().union().string();
                 List<TsTunnel> tsTunnels = new ArrayList<>();
+                TeNodeKey src = new TeNodeKey(-1, -1, -1, -1);
+                TeNodeKey dst = new TeNodeKey(-1, -1, -1, -1);
+                LtpId dstLtpId = LtpId.ltpId(0, "");
+                LTPoint srcLTPoint = new LTPoint(src, null);
+                LTPoint dstLTPoint = new LTPoint(dst, dstLtpId);
+                List<TsLink> tsLinkList = new ArrayList<>();
+                TsLink tsLink = new TsLink(srcLTPoint, dstLTPoint);
+                tsLinkList.add(tsLink);
                 List<OtnTunnels> otnTunnels = ((DefaultFrameBase) ethtSvcInstance.underlay().technology()).otnTunnels();
-                if(otnTunnels!=null && !otnTunnels.isEmpty()){
-                    for(OtnTunnels otnTunnel : otnTunnels){
-                        tsTunnels.add(new TsTunnel(null, otnTunnel.name().toString()));
+                if (otnTunnels != null && !otnTunnels.isEmpty()) {
+                    for (OtnTunnels otnTunnel : otnTunnels) {
+                        tsTunnels.add(new TsTunnel(tsLinkList, otnTunnel.name().toString()));
                     }
                 }
                 List<EthSrvEndPoint> ethSrvEndPoints = new ArrayList<>();
                 List<EthtSvcEndPoints> ethtSvcEndPoints = ethtSvcInstance.ethtSvcEndPoints();
-                if(ethtSvcEndPoints!=null && !ethtSvcEndPoints.isEmpty()){
-                    for (EthtSvcEndPoints ethtSvcEndPoint: ethtSvcEndPoints) {
+                if (ethtSvcEndPoints != null && !ethtSvcEndPoints.isEmpty()) {
+                    for (EthtSvcEndPoints ethtSvcEndPoint : ethtSvcEndPoints) {
                         String ethtSvcEndPointName = ethtSvcEndPoint.ethtSvcEndPointName();
                         List<EthSrvAccessPoint> ethSrvAccessPoints = new ArrayList<>();
                         List<EthtSvcAccessPoints> ethtSvcAccessPoints = ethtSvcEndPoint.ethtSvcAccessPoints();
-                        if(ethtSvcAccessPoints!=null && !ethtSvcAccessPoints.isEmpty()){
-                            for(EthtSvcAccessPoints ethtSvcAccessPoint : ethtSvcAccessPoints){
-                                ethSrvAccessPoints.add(new EthSrvAccessPoint(ethtSvcAccessPoint.accessPointId(),ethtSvcAccessPoint.accessNodeId().dottedQuad().string(), ethtSvcAccessPoint.accessLtpId().union().uint32()));
+                        if (ethtSvcAccessPoints != null && !ethtSvcAccessPoints.isEmpty()) {
+                            for (EthtSvcAccessPoints ethtSvcAccessPoint : ethtSvcAccessPoints) {
+                                ethSrvAccessPoints.add(new EthSrvAccessPoint(ethtSvcAccessPoint.accessPointId(), ethtSvcAccessPoint.accessNodeId().dottedQuad().string(), ethtSvcAccessPoint.accessLtpId().union().uint32()));
                             }
                         }
                         int vlanValue = ((DefaultIndividualVlan) ((DefaultVlanClassification) ethtSvcEndPoint.serviceClassification()).outerTag().individualBundlingVlan()).vlanValue().uint16();
@@ -260,10 +274,10 @@ public class PncConverter extends ActnDataConverter {
                         ethSrvEndPoints.add(new EthSrvEndPoint(ethtSvcEndPointName, ethSrvAccessPoints, vlanValue, cir, eir));
                     }
                 }
-                ethSrvInstances.add(new EthSrvInstance(ethtSvcName,ethtSvcDescr, providerId, clientId, topologyId, tsTunnels, ethSrvEndPoints));
+                ethSrvInstances.add(new EthSrvInstance(ethtSvcName, ethtSvcDescr, providerId, clientId, topologyId, tsTunnels, ethSrvEndPoints));
             }
             return new TsEthSrv(ethSrvInstances);
-        }else{
+        } else {
             return new TsEthSrv(null);
         }
     }
@@ -271,10 +285,10 @@ public class PncConverter extends ActnDataConverter {
     public DefaultEthtSvc convertActnEthService(CustomerEthService customerEthService) throws Exception {
         checkNotNull(customerEthService, "convertActnEthService: customerEthService is null");
         List<EthSrvInstance> ethSrvInstances = ((TsEthSrv) customerEthService).getEthSrvInstances();
-        if(ethSrvInstances!=null && !ethSrvInstances.isEmpty()){
+        if (ethSrvInstances != null && !ethSrvInstances.isEmpty()) {
             DefaultEthtSvc defaultEthtSvc = new DefaultEthtSvc();
             List<EthtSvcInstances> ethtSvcInstances = new ArrayList<>();
-            for(EthSrvInstance ethSrvInstance: ethSrvInstances){
+            for (EthSrvInstance ethSrvInstance : ethSrvInstances) {
                 EthtSvcInstances ethtSvcInstance = new DefaultEthtSvcInstances();
                 String ethSrvName = ethSrvInstance.getEthSrvName();
                 ethtSvcInstance.ethtSvcName(ethSrvName);
@@ -291,8 +305,8 @@ public class PncConverter extends ActnDataConverter {
                 Underlay underlay = new DefaultUnderlay();
                 DefaultFrameBase defaultFrameBase = new DefaultFrameBase();
                 List<OtnTunnels> otnTunnels = new ArrayList<>();
-                if(ethSrvInstance.getOtnTunnels()!=null &&!ethSrvInstance.getOtnTunnels().isEmpty() ){
-                    for(TsTunnel tsTunnel: ethSrvInstance.getOtnTunnels()){
+                if (ethSrvInstance.getOtnTunnels() != null && !ethSrvInstance.getOtnTunnels().isEmpty()) {
+                    for (TsTunnel tsTunnel : ethSrvInstance.getOtnTunnels()) {
                         DefaultOtnTunnels defaultOtnTunnels = new DefaultOtnTunnels();
                         defaultOtnTunnels.name(tsTunnel.name());
                         otnTunnels.add(defaultOtnTunnels);
@@ -311,13 +325,13 @@ public class PncConverter extends ActnDataConverter {
                 resilience.protection(protection);
                 ethtSvcInstance.resilience(resilience);
                 List<EthtSvcEndPoints> ethtSvcEndPoints = new ArrayList<>();
-                if(ethSrvInstance.getEthSrvEndPoints()!=null &&!ethSrvInstance.getEthSrvEndPoints().isEmpty()){
-                    for(EthSrvEndPoint ethSrvEndPoint: ethSrvInstance.getEthSrvEndPoints()){
+                if (ethSrvInstance.getEthSrvEndPoints() != null && !ethSrvInstance.getEthSrvEndPoints().isEmpty()) {
+                    for (EthSrvEndPoint ethSrvEndPoint : ethSrvInstance.getEthSrvEndPoints()) {
                         EthtSvcEndPoints ethtSvcEndPoint = new DefaultEthtSvcEndPoints();
                         ethtSvcEndPoint.ethtSvcEndPointName(ethSrvEndPoint.getEthtSvcEndPointName());
                         List<EthtSvcAccessPoints> ethtSvcAccessPoints = new ArrayList<>();
-                        if(ethSrvEndPoint.getEthSrvAccessPoints()!=null && !ethSrvEndPoint.getEthSrvAccessPoints().isEmpty()){
-                            for(EthSrvAccessPoint ethSrvAccessPoint: ethSrvEndPoint.getEthSrvAccessPoints()){
+                        if (ethSrvEndPoint.getEthSrvAccessPoints() != null && !ethSrvEndPoint.getEthSrvAccessPoints().isEmpty()) {
+                            for (EthSrvAccessPoint ethSrvAccessPoint : ethSrvEndPoint.getEthSrvAccessPoints()) {
                                 EthtSvcAccessPoints ethtSvcAccessPoint = new DefaultEthtSvcAccessPoints();
                                 ethtSvcAccessPoint.accessPointId(ethSrvAccessPoint.getAccessPointId());
                                 ethtSvcAccessPoint.accessNodeId(new TeNodeId(new DottedQuad(ethSrvAccessPoint.getAccessNodeId())));
@@ -325,23 +339,24 @@ public class PncConverter extends ActnDataConverter {
                                 ethtSvcAccessPoints.add(ethtSvcAccessPoint);
                             }
                         }
+                        ethtSvcEndPoint.ethtSvcAccessPoints(ethtSvcAccessPoints);
                         ethtSvcEndPoint.serviceClassificationType(VlanClassification.class);
                         ServiceClassification serviceClassification = new DefaultVlanClassification();
                         OuterTag outerTag = new DefaultOuterTag();
                         outerTag.tagType(new EthTagClassify(ClassifyCvlan.class));
                         IndividualVlan individualVlan = new DefaultIndividualVlan();
                         individualVlan.vlanValue(new Vlanid(ethSrvEndPoint.getVlanValue()));
-                        outerTag.individualBundlingVlan();
-                        ((DefaultVlanClassification)serviceClassification).outerTag(outerTag);
+                        outerTag.individualBundlingVlan(individualVlan);
+                        ((DefaultVlanClassification) serviceClassification).outerTag(outerTag);
                         ethtSvcEndPoint.serviceClassification(serviceClassification);
                         Direction direction = new DefaultSymmetrical();
                         IngressEgressBandwidthProfile ingressEgressBandwidthProfile = new DefaultIngressEgressBandwidthProfile();
                         Style style = new DefaultValue();
-                        ((DefaultValue)style).bandwidthProfileType(new BandwidthProfileTypeTypedef(Mef10Bwp.class));
-                        ((DefaultValue)style).cir(ethSrvEndPoint.getCIR());
-                        ((DefaultValue)style).eir(ethSrvEndPoint.getEIR());
+                        ((DefaultValue) style).bandwidthProfileType(new BandwidthProfileTypeTypedef(Mef10Bwp.class));
+                        ((DefaultValue) style).cir(ethSrvEndPoint.getCIR());
+                        ((DefaultValue) style).eir(ethSrvEndPoint.getEIR());
                         ingressEgressBandwidthProfile.style(style);
-                        ((DefaultSymmetrical)direction).ingressEgressBandwidthProfile(ingressEgressBandwidthProfile);
+                        ((DefaultSymmetrical) direction).ingressEgressBandwidthProfile(ingressEgressBandwidthProfile);
                         ethtSvcEndPoint.direction(direction);
                         ethtSvcEndPoints.add(ethtSvcEndPoint);
                     }
@@ -351,10 +366,11 @@ public class PncConverter extends ActnDataConverter {
             }
             defaultEthtSvc.ethtSvcInstances(ethtSvcInstances);
             return defaultEthtSvc;
-        }else{
+        } else {
             return new DefaultEthtSvc();
         }
     }
+
     private OduResource teBandwidthToOduResource(TeBandwidth teBandwidth) {
         Technology otn = teBandwidth.technology();
         short odu0s = 0, odu1s = 0, odu2s = 0, odu2es = 0, odu3s = 0, odu4s = 0, oduFlex = 0;
@@ -375,6 +391,30 @@ public class PncConverter extends ActnDataConverter {
             } else if (elemOdu.oduType().isAssignableFrom(Oduflex.class)) {
                 oduFlex = (short) elemOdu.number();
             }
+        }
+        return new OduResource(odu0s, odu1s, odu2s, odu2es, odu3s, odu4s, oduFlex,
+                null, null); //TODO: TribPorts and TribSlots
+    }
+
+    private OduResource teBandwidth2OduResource(TeBandwidth teBandwidth) {
+        Technology otn = teBandwidth.technology();
+        short odu0s = 0, odu1s = 0, odu2s = 0, odu2es = 0, odu3s = 0, odu4s = 0, oduFlex = 0;
+        short numOfThisOdu = 1;
+        Otn elemOdu = ((org.onosproject.yang.gen.v11.ietfotntunnel.rev20210625.ietfotntunnel.te.tunnels.tunnel.tebandwidth.technology.augmentedtetechnology.DefaultOtn) otn).otn();
+        if (elemOdu.oduType().isAssignableFrom(Odu0.class)) {
+            odu0s = PncUtils.byteArray2Short(elemOdu.valueLeafFlags().toByteArray());
+        } else if (elemOdu.oduType().isAssignableFrom(Odu1.class)) {
+            odu1s = PncUtils.byteArray2Short(elemOdu.valueLeafFlags().toByteArray());
+        } else if (elemOdu.oduType().isAssignableFrom(Odu2.class)) {
+            odu2s = PncUtils.byteArray2Short(elemOdu.valueLeafFlags().toByteArray());
+        } else if (elemOdu.oduType().isAssignableFrom(Odu2e.class)) {
+            odu2es = PncUtils.byteArray2Short(elemOdu.valueLeafFlags().toByteArray());
+        } else if (elemOdu.oduType().isAssignableFrom(Odu3.class)) {
+            odu3s = PncUtils.byteArray2Short(elemOdu.valueLeafFlags().toByteArray());
+        } else if (elemOdu.oduType().isAssignableFrom(Odu4.class)) {
+            odu4s = PncUtils.byteArray2Short(elemOdu.valueLeafFlags().toByteArray());
+        } else if (elemOdu.oduType().isAssignableFrom(Oduflex.class)) {
+            oduFlex = PncUtils.byteArray2Short(elemOdu.valueLeafFlags().toByteArray());
         }
         return new OduResource(odu0s, odu1s, odu2s, odu2es, odu3s, odu4s, oduFlex,
                 null, null); //TODO: TribPorts and TribSlots
