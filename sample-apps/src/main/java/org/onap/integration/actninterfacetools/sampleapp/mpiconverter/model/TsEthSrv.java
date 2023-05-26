@@ -19,7 +19,7 @@
  */
 package org.onap.integration.actninterfacetools.sampleapp.mpiconverter.model;
 
-import org.onap.integration.actninterfacetools.actnclient.api.CustomerEthService;
+import org.onap.integration.actninterfacetools.globalapi.CustomerEthService;
 
 import java.util.List;
 
@@ -28,6 +28,13 @@ public class TsEthSrv extends CustomerEthService implements EthSrv{
 
     public TsEthSrv(List<EthSrvInstance> ethSrvInstances) {
         this.ethSrvInstances = ethSrvInstances;
+    }
+
+    @Override
+    public String toString() {
+        return "TsEthSrv{" +
+                "ethSrvInstances=" + ethSrvInstances +
+                '}';
     }
 
     @Override

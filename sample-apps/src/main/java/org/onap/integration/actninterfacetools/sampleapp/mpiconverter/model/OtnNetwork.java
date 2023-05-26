@@ -19,12 +19,10 @@
  */
 package org.onap.integration.actninterfacetools.sampleapp.mpiconverter.model;
 
-import org.onap.integration.actninterfacetools.actnclient.api.CustomerOtnTopology;
-import org.onap.integration.actninterfacetools.sampleapp.mpiconverter.converter.PncConverter;
+import org.onap.integration.actninterfacetools.globalapi.CustomerOtnTopology;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -37,32 +35,6 @@ public class OtnNetwork extends CustomerOtnTopology implements Network {
     private final List<TsLink> innerLinks;
     private final Map<TeNodeKey,List<TsLink>> edgeLinks;
     private final PncOtnBandwidthProfile bandwidthProfileSupplier;
-
-//    public OtnNetwork(org.onosproject.yang.gen.v11.ietfnetwork.rev20180226.ietfnetwork.networks.Network yangNetwork){
-//
-//        this(yangNetwork,
-//                ()-> PncConverter.getOtnNodes(yangNetwork),
-//                ()-> PncConverter.getTsNodeInfo(yangNetwork),
-//                ()-> PncConverter.getOtnInnerLinks(yangNetwork),
-//                ()-> PncConverter.getOtnEdgeLinks(yangNetwork),
-//                ()-> PncConverter.getBandWidthProfile(yangNetwork));
-//    }
-
-
-//     OtnNetwork(org.onosproject.yang.gen.v11.ietfnetwork.rev20180226.ietfnetwork.networks.Network yangNetwork,
-//                      Supplier<List<TeNodeKey>> nodes,
-//                      Supplier<Map<TeNodeKey, TsNodeInfo>> tsNodeInfos,
-//                      Supplier<List<TsLink>> innerLinks,
-//                      Supplier<Map<TeNodeKey, List<TsLink>>> edgeLinks,
-//                      Supplier<PncOtnBandwidthProfile> bandwidthProfile){
-//        checkNotNull(yangNetwork, "OtnNetwork: yangNetwork passed in is null");
-//        this.networkId = yangNetwork.networkId().toString();
-//        this.nodes = nodes;
-//        this.innerLinks = innerLinks;
-//        this.edgeLinks = edgeLinks;
-//        this.tsNodeInfos = tsNodeInfos;
-//        this.bandwidthProfileSupplier = bandwidthProfile;
-//    }
 
     public OtnNetwork(String networkId, List<TeNodeKey> otnNodes, Map<TeNodeKey, TsNodeInfo> tsNodeInfo, List<TsLink> otnInnerLinks, Map<TeNodeKey, List<TsLink>> otnEdgeLinks, PncOtnBandwidthProfile bandWidthProfile) {
         this.networkId = networkId;
@@ -102,5 +74,18 @@ public class OtnNetwork extends CustomerOtnTopology implements Network {
     @Override
     public String networkId(){
         return this.networkId;
+    }
+
+    @Override
+    public String toString() {
+        return "OtnNetwork{" +
+                "networkType=" + networkType +
+                ", networkId='" + networkId + '\'' +
+                ", nodes=" + nodes +
+                ", tsNodeInfos=" + tsNodeInfos +
+                ", innerLinks=" + innerLinks +
+                ", edgeLinks=" + edgeLinks +
+                ", bandwidthProfileSupplier=" + bandwidthProfileSupplier +
+                '}';
     }
 }
