@@ -23,6 +23,8 @@ package org.onap.integration.actninterfacetools.sampleapp.mpiconverter.converter
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.ByteBuffer;
+
 public class PncUtils {
 
     private static final Logger log = LoggerFactory.getLogger(PncUtils.class);
@@ -96,5 +98,33 @@ public class PncUtils {
             return true;
         }
         throw new IllegalArgumentException("PncUtils: setBits: Illegal Argument");
+    }
+    public static long byteArray2Long(byte[] bytes)
+    {
+        long value = 0l;
+
+        // Iterating through for loop
+        for (byte b : bytes) {
+            // Shifting previous value 8 bits to right and
+            // add it with next value
+            value = (value << 8) + (b & 255);
+        }
+
+        return value;
+    }
+    public static short byteArray2Short(byte[] array) {
+//        ByteBuffer buffer = ByteBuffer.wrap(array);
+//        return buffer.getShort();
+        short value = 0;
+
+        // Iterating through for loop
+        for (byte b : array) {
+            // Shifting previous value 8 bits to right and
+            // add it with next value
+            value = (short) ((value << 8) + (b & 255));
+        }
+
+        return value;
+
     }
 }

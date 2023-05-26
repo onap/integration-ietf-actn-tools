@@ -252,13 +252,13 @@ public class OduResource{
     public byte[] getTribPortAvailabilityBitmap() {
         return tribPortAvailabilityBitmap == null ? null :
                 Arrays.copyOf(tribPortAvailabilityBitmap,
-                              tribPortAvailabilityBitmap.length);
+                        tribPortAvailabilityBitmap.length);
     }
 
     public byte[] getTribSlotAvailabilityBitmap() {
         return tribSlotAvailabilityBitmap == null ? null :
                 Arrays.copyOf(tribSlotAvailabilityBitmap,
-                              tribSlotAvailabilityBitmap.length);
+                        tribSlotAvailabilityBitmap.length);
     }
 
     @Override
@@ -284,9 +284,9 @@ public class OduResource{
                     (this.odu4s == that.odu4s) &&
                     (this.oduFlex == that.oduFlex) &&
                     Arrays.equals(this.tribPortAvailabilityBitmap,
-                                  that.tribPortAvailabilityBitmap) &&
+                            that.tribPortAvailabilityBitmap) &&
                     Arrays.equals(this.tribSlotAvailabilityBitmap,
-                                  that.tribSlotAvailabilityBitmap);
+                            that.tribSlotAvailabilityBitmap);
         }
         return false;
     }

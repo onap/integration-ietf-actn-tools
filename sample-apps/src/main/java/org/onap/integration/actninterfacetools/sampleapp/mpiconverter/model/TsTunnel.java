@@ -20,6 +20,8 @@
 package org.onap.integration.actninterfacetools.sampleapp.mpiconverter.model;
 
 import com.google.common.collect.ImmutableList;
+//import org.onlab.graph.ScalarWeight;
+//import org.onlab.graph.Weight;
 
 
 import java.util.List;
@@ -31,7 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class TsTunnel extends TsLink {
 
     private final List<TsLink> links;
-//    private final Weight cost;
+    //    private final Weight cost;
     private final String name;
     private OduResource bw = null;
 
@@ -43,6 +45,7 @@ public class TsTunnel extends TsLink {
         this.name = name;
 
     }
+
 //    public TsTunnel(LTPoint srcLtPoint, LTPoint dstLtPoint){
 //        super(srcLtPoint, dstLtPoint);
 //        this.links = null;
@@ -60,7 +63,7 @@ public class TsTunnel extends TsLink {
 //        return 0;
 //    }
 
-//    public Weight weight() {
+    //    public Weight weight() {
 //        return cost;
 //    }
     public String name() {
@@ -69,7 +72,7 @@ public class TsTunnel extends TsLink {
     private static LTPoint source(List<TsLink> links) {
         checkNotNull(links, "List of path links cannot be null");
         checkArgument(!links.isEmpty(), "List of path links cannot be null");
-        return links.get(0).dst();
+        return links.get(0).src();
     }
 
     private static LTPoint destination(List<TsLink> links) {
@@ -100,7 +103,7 @@ public class TsTunnel extends TsLink {
             final TsTunnel other = (TsTunnel) obj;
             return Objects.equals(this.links, other.links);
         }
-         return false;
+        return false;
     }
 
     public OduResource bw() {
