@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f55c2167_deab2352",
+        "filename": "actn-interface-tools/actn-client/src/main/java/org/onap/integration/actninterfacetools/actnclient/api/MdscController.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-06-20T17:47:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6ff156a5_0bd0cd5a",
+      "range": {
+        "startLine": 66,
+        "startChar": 7,
+        "endLine": 66,
+        "endChar": 24
+      },
+      "revId": "1863249ff5ef1fe4ae34a91ff1cb6046e9204cab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0865e517_3b0c605d",
         "filename": "actn-interface-tools/actn-client/src/main/java/org/onap/integration/actninterfacetools/actnclient/api/MdscController.java",
         "patchSetId": 5
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "c0b9bb25_c494f4c4",
+        "filename": "actn-interface-tools/actn-client/src/main/java/org/onap/integration/actninterfacetools/actnclient/api/MdscController.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-06-20T17:47:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0865e517_3b0c605d",
+      "range": {
+        "startLine": 67,
+        "startChar": 14,
+        "endLine": 67,
+        "endChar": 26
+      },
+      "revId": "1863249ff5ef1fe4ae34a91ff1cb6046e9204cab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7d4e611f_6c8b88d9",
         "filename": "actn-interface-tools/actn-client/src/main/java/org/onap/integration/actninterfacetools/actnclient/api/MdscController.java",
         "patchSetId": 5
@@ -68,6 +116,30 @@
       "revId": "1863249ff5ef1fe4ae34a91ff1cb6046e9204cab",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a535b112_dea744dc",
+        "filename": "actn-interface-tools/actn-client/src/main/java/org/onap/integration/actninterfacetools/actnclient/api/MdscController.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3755
+      },
+      "writtenOn": "2023-06-20T17:47:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d4e611f_6c8b88d9",
+      "range": {
+        "startLine": 71,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 15
+      },
+      "revId": "1863249ff5ef1fe4ae34a91ff1cb6046e9204cab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
